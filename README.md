@@ -1,0 +1,1 @@
+Repro for nodejs_binary absolute import bug in rules_nodejs 4.0.0 .

@@ -1,0 +1,9 @@
+{
+  "name": "nodejs_binary_absolute_import_failure",
+  "version": "1.0.0",
+  "dependencies": {
+    "@bazel/typescript": "4.0.0",
+    "@types/node": "^16.7.10",
+    "typescript": "^4.4.2"
+  }
+}

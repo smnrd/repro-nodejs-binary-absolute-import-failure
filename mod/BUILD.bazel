@@ -1,0 +1,29 @@
+load("@npm//@bazel/typescript:index.bzl", "ts_project")
+
+package(default_visibility = ["//visibility:public"])
+
+ts_project(
+    name = "mod",
+    srcs = ["index.ts"],
+    deps = ["@npm//@types/node"],
+    tsconfig = {
+        "compilerOptions": {
+            "target": "ES2019",
+            "module": "commonjs",
+            "moduleResolution": "node",
+            "lib": ["es2019"],
+            "types": [
+                "node",
+            ],
+            "declaration": True,
+            "strict": True,
+            "noImplicitAny": True,
+            "strictNullChecks": True,
+            "alwaysStrict": True,
+            "sourceMap": True,
+        }
+    },
+    source_map = True,
+    declaration = True,
+    link_workspace_root = True,
+)

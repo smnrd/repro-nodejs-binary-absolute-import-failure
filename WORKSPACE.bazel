@@ -1,0 +1,66 @@
+workspace(
+    name = "mywksp"
+)
+
+# Configuration
+
+# Rules nodejs (https://bazelbuild.github.io/rules_nodejs/)
+
+RULES_NODEJS_VERSION = "4.0.0"
+
+RULES_NODEJS_SHA256 = "8a7c981217239085f78acc9898a1f7ba99af887c1996ceb3b4504655383a2c3c"
+
+NODEJS_VERSION = "14.17.5"
+
+NODEJS_LINUX_SHA256 = "2d759de07a50cd7f75bd73d67e97b0d0e095ee3c413efac7d1b3d1e84ed76fff"
+
+NODEJS_DARWIN_SHA256 = "6e1d9e6091b14f5accb03dad7617492442dad83778cc34de45f1818a75b6368b"
+
+YARN_VERSION = "1.22.11"
+
+YARN_SHA256 = "2c320de14a6014f62d29c34fec78fdbb0bc71c9ccba48ed0668de452c1f5fe6c"
+
+# Workspace rules
+
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "build_bazel_rules_nodejs",
+    sha256 = RULES_NODEJS_SHA256,
+    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/{0}/rules_nodejs-{0}.tar.gz".format(RULES_NODEJS_VERSION)],
+)
+
+load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "yarn_install")
+
+node_repositories(
+    node_repositories = {
+        "{0}-linux_amd64".format(NODEJS_VERSION): (
+            "node-v{0}-linux-x64.tar.xz".format(NODEJS_VERSION),
+            "node-v{0}-linux-x64".format(NODEJS_VERSION),
+            NODEJS_LINUX_SHA256,
+        ),
+        "{0}-darwin_amd64".format(NODEJS_VERSION): (
+            "node-v{0}-darwin-x64.tar.xz".format(NODEJS_VERSION),
+            "node-v{0}-darwin-x64".format(NODEJS_VERSION),
+            NODEJS_DARWIN_SHA256,
+        ),
+    },
+    node_urls = ["https://nodejs.org/dist/v{version}/{filename}"],
+    node_version = NODEJS_VERSION,
+    yarn_repositories = {
+        YARN_VERSION: (
+            "yarn-v{0}.tar.gz".format(YARN_VERSION),
+            "yarn-v{0}".format(YARN_VERSION),
+            YARN_SHA256,
+        ),
+    },
+    yarn_urls = ["https://github.com/yarnpkg/yarn/releases/download/v{version}/{filename}"],
+    yarn_version = YARN_VERSION,
+)
+
+yarn_install(
+    name = "npm",
+    package_json = "//:package.json",
+    yarn_lock = "//:yarn.lock",
+    symlink_node_modules = False
+)

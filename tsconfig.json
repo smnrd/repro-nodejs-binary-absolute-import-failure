@@ -1,0 +1,13 @@
+{
+    "exclude": [ "bazel-*" ],
+    "compilerOptions": {
+        "lib": ["ES2019"],
+        "types": ["node"],
+        "baseUrl": "./",
+        "esModuleInterop": true,
+        "paths": {
+            "mywksp/*": ["*"]
+        },
+        "strict": true
+    }
+  }

@@ -1,0 +1,37 @@
+load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_binary")
+load("@npm//@bazel/typescript:index.bzl", "ts_project")
+
+package(default_visibility = ["//visibility:public"])
+
+ts_project(
+    name = "lib",
+    srcs = ["index.ts"],
+    deps = ["@npm//@types/node", "//mod"],
+    tsconfig = {
+        "compilerOptions": {
+            "target": "ES2019",
+            "module": "commonjs",
+            "moduleResolution": "node",
+            "lib": ["es2019"],
+            "types": [
+                "node",
+            ],
+            "declaration": True,
+            "strict": True,
+            "noImplicitAny": True,
+            "strictNullChecks": True,
+            "alwaysStrict": True,
+            "sourceMap": True,
+        }
+    },
+    source_map = True,
+    declaration = True,
+    link_workspace_root = True,
+)
+
+nodejs_binary(
+  name = "main",
+  entry_point = ":index.ts",
+  data = [":lib"],
+  link_workspace_root = True
+)
